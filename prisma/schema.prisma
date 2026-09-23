@@ -1,0 +1,51 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Lead {
+  id             String   @id @default(uuid()) @db.Uuid
+  name           String   @db.VarChar(80)
+  contact        String   @db.VarChar(120)
+  direction      String   @db.VarChar(24)
+  format         String   @db.VarChar(24)
+  status         String   @default("new") @db.VarChar(24)
+  consentVersion String   @map("consent_version") @db.VarChar(40)
+  dedupeKey      String   @unique @map("dedupe_key") @db.VarChar(140)
+  createdAt      DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  @@index([status, createdAt])
+  @@map("leads")
+}
+
+enum Role {
+  student
+  mentor
+  admin
+}
+
+// Account foundation only. Authentication and permissions will be added separately.
+model User {
+  id        String     @id @default(uuid()) @db.Uuid
+  name      String?
+  createdAt DateTime   @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt DateTime   @updatedAt @map("updated_at") @db.Timestamptz(3)
+  roles     UserRole[]
+
+  @@map("users")
+}
+
+// Multiple roles are allowed, with no automatic assignment of privileged roles.
+model UserRole {
+  userId    String   @map("user_id") @db.Uuid
+  role      Role
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([userId, role])
+  @@map("user_roles")
+}
