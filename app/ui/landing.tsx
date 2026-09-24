@@ -196,7 +196,7 @@ export default function Landing({
             <h1>
               Не просто
               <br />
-              изучай IT.
+              изучай IT
               <br />
               <span className="serif-accent">
                 <span className="changing-word-stage" aria-live="polite">
