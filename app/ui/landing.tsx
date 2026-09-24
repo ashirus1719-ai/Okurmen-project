@@ -8,12 +8,12 @@ import Link from "next/link";
 import { courses } from "@/lib/courses";
 
 const changingWords = [
-  { text: "Создавай.", color: "#FFD700" },
-  { text: "Программируй.", color: "#00D9FF" },
-  { text: "Разрабатывай.", color: "#FF6B00" },
-  { text: "Твори.", color: "#B84FFF" },
-  { text: "Внедряй.", color: "#00FF87" },
-  { text: "Запускай.", color: "#FF4757" },
+  { text: "Создавай", color: "#f0bd28", effect: "create", mark: "✦" },
+  { text: "Программируй", color: "#19b8d1", effect: "code", mark: "</>" },
+  { text: "Разрабатывай", color: "#e56a32", effect: "develop", mark: "{ }" },
+  { text: "Твори", color: "#a86ad1", effect: "imagine", mark: "✺" },
+  { text: "Внедряй", color: "#52a66d", effect: "deploy", mark: "↗" },
+  { text: "Запускай", color: "#e65360", effect: "launch", mark: "➜" },
 ];
 
 const faqs = [
@@ -72,17 +72,16 @@ export default function Landing({
   const [answer, setAnswer] = useState<string | null>(null);
   const [review, setReview] = useState("students");
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
-  const [isExploding, setIsExploding] = useState(false);
   const [state, formAction, pending] = useActionState(submitLead, {
     status: "idle",
     message: "",
   });
 
-  // Плавная смена слов каждые 10 секунд
+  // Каждое слово получает собственную анимацию раз в пять секунд.
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentWordIndex((prev) => (prev + 1) % changingWords.length);
-    }, 10000);
+    }, 5000);
     return () => clearInterval(interval);
   }, []);
   useEffect(() => {
@@ -212,14 +211,27 @@ export default function Landing({
             <h1>
               Не просто
               <br />
-              изучай IT.
+              изучай IT
               <br />
               <span className="serif-accent">
-                <span 
-                  className="changing-word-simple"
-                  style={{ color: changingWords[currentWordIndex].color }}
-                >
-                  {changingWords[currentWordIndex].text}
+                <span className="changing-word-stage" aria-live="polite">
+                  <span
+                    key={currentWordIndex}
+                    className={`changing-word changing-word--${changingWords[currentWordIndex].effect}`}
+                    style={{ color: changingWords[currentWordIndex].color }}
+                  >
+                    <span className="changing-word-text">
+                      {changingWords[currentWordIndex].text}
+                    </span>
+                    <span className="changing-word-mark" aria-hidden="true">
+                      {changingWords[currentWordIndex].mark}
+                    </span>
+                    <span className="word-particles" aria-hidden="true">
+                      {Array.from({ length: 6 }, (_, index) => (
+                        <i key={index} />
+                      ))}
+                    </span>
+                  </span>
                 </span>
                 <span className="heading-star" aria-hidden="true">
                   ✳
