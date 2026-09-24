@@ -218,9 +218,6 @@ export default function Landing({
                     </span>
                   </span>
                 </span>
-                <span className="heading-star" aria-hidden="true">
-                  ✳
-                </span>
               </span>
             </h1>
             <p className="hero-description">
