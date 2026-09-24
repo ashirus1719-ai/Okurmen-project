@@ -7,6 +7,15 @@ import Link from "next/link";
 
 import { courses } from "@/lib/courses";
 
+const changingWords = [
+  { text: "Создавай.", color: "#FFD700" },
+  { text: "Программируй.", color: "#00D9FF" },
+  { text: "Разрабатывай.", color: "#FF6B00" },
+  { text: "Твори.", color: "#B84FFF" },
+  { text: "Внедряй.", color: "#00FF87" },
+  { text: "Запускай.", color: "#FF4757" },
+];
+
 const faqs = [
   [
     "Я никогда не писал код. У меня получится?",
@@ -36,9 +45,7 @@ const faqs = [
 function Brand() {
   return (
     <a href="#main" className="brand" aria-label="Окурмен айти — главная">
-      <span className="brand-icon">
-        о<span>↗</span>
-      </span>
+      <img src="/okurman-it.jpg" alt="Окурмен айти" className="brand-icon" />
       <span>
         окурмен<span className="brand-sub">айти мектеби</span>
       </span>
@@ -64,10 +71,20 @@ export default function Landing({
   const [filter, setFilter] = useState(initialFilter);
   const [answer, setAnswer] = useState<string | null>(null);
   const [review, setReview] = useState("students");
+  const [currentWordIndex, setCurrentWordIndex] = useState(0);
+  const [isExploding, setIsExploding] = useState(false);
   const [state, formAction, pending] = useActionState(submitLead, {
     status: "idle",
     message: "",
   });
+
+  // Плавная смена слов каждые 10 секунд
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentWordIndex((prev) => (prev + 1) % changingWords.length);
+    }, 10000);
+    return () => clearInterval(interval);
+  }, []);
   useEffect(() => {
     const sync = () => {
       const selected = new URLSearchParams(window.location.search).get(
@@ -183,7 +200,12 @@ export default function Landing({
               изучай IT.
               <br />
               <span className="serif-accent">
-                Создавай.
+                <span 
+                  className="changing-word-simple"
+                  style={{ color: changingWords[currentWordIndex].color }}
+                >
+                  {changingWords[currentWordIndex].text}
+                </span>
                 <span className="heading-star" aria-hidden="true">
                   ✳
                 </span>

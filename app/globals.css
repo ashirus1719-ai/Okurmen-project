@@ -12,8 +12,8 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-jetbrains-mono);
 }
 html {
   scroll-behavior: smooth;
@@ -26,7 +26,7 @@ body {
   margin: 0;
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   font-size: 15px;
   -webkit-font-smoothing: antialiased;
 }
@@ -82,7 +82,7 @@ p {
   padding-block: 100px;
 }
 .eyebrow {
-  font-family: var(--font-geist-mono), monospace;
+  font-family: var(--font-jetbrains-mono), monospace;
   font-size: 10px;
   letter-spacing: 1.8px;
   font-weight: 500;
@@ -190,26 +190,10 @@ p {
   margin-top: 7px;
 }
 .brand-icon {
-  background: var(--accent);
-  border-radius: 11px;
-  color: #fff;
   width: 43px;
   height: 43px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 42px;
-  font-weight: 500;
-  position: relative;
-  padding-bottom: 6px;
-  letter-spacing: -7px;
-}
-.brand-icon > span {
-  font-size: 24px;
-  position: absolute;
-  right: 2px;
-  top: 0;
-  letter-spacing: 0;
+  border-radius: 11px;
+  object-fit: cover;
 }
 .nav {
   display: flex;
@@ -298,6 +282,26 @@ p {
   color: var(--accent);
   display: inline-block;
   position: relative;
+}
+.yellow-text {
+  color: #FFD700 !important;
+}
+/* Простая плавная смена слов */
+.changing-word-simple {
+  display: inline-block;
+  position: relative;
+  animation: simpleFade 1s ease-in-out;
+  transition: color 1s ease;
+}
+@keyframes simpleFade {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 .heading-star {
   position: absolute;
@@ -421,7 +425,7 @@ p {
   text-align: right;
 }
 .code-line code {
-  font-family: var(--font-geist-mono), monospace;
+  font-family: var(--font-jetbrains-mono), monospace;
 }
 .code-line b {
   color: #d8a4ca;
@@ -633,7 +637,7 @@ p {
   padding: 24px 30px;
 }
 .ribbon-item {
-  font-family: var(--font-geist-mono), monospace;
+  font-family: var(--font-jetbrains-mono), monospace;
   font-size: 13px;
   color: #585b51;
   display: flex;
@@ -731,7 +735,7 @@ h2 {
   color: #74776a;
 }
 .course-symbol {
-  font-family: var(--font-geist-mono), monospace;
+  font-family: var(--font-jetbrains-mono), monospace;
   font-size: 65px;
   font-weight: 500;
   letter-spacing: -7px;
@@ -778,7 +782,7 @@ h2 {
 }
 .course-tags span {
   font:
-    9px var(--font-geist-mono),
+    9px var(--font-jetbrains-mono),
     monospace;
   background: #ffffff70;
   border-radius: 4px;
@@ -897,7 +901,7 @@ h2 {
 .mini-editor code {
   display: block;
   font:
-    13px/1.7 var(--font-geist-mono),
+    13px/1.7 var(--font-jetbrains-mono),
     monospace;
   margin: 14px 0;
   white-space: pre;
@@ -1076,7 +1080,7 @@ h2 {
   display: block;
   color: #a4b499;
   font:
-    12px var(--font-geist-mono),
+    12px var(--font-jetbrains-mono),
     monospace;
   margin-top: 35px;
 }
@@ -1092,13 +1096,13 @@ h2 {
   justify-content: space-between;
   color: #b8c4aa;
   font:
-    9px var(--font-geist-mono),
+    9px var(--font-jetbrains-mono),
     monospace;
   letter-spacing: 1px;
 }
 .quiz-card pre {
   font:
-    12px/1.9 var(--font-geist-mono),
+    12px/1.9 var(--font-jetbrains-mono),
     monospace;
   margin: 24px 0;
   padding: 19px 14px;
@@ -1134,7 +1138,7 @@ h2 {
   border-radius: 5px;
   color: #ebeddd;
   font:
-    11px var(--font-geist-mono),
+    11px var(--font-jetbrains-mono),
     monospace;
   min-height: 44px;
 }
