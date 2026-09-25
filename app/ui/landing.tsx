@@ -155,9 +155,6 @@ export default function Landing({
           ))}
         </nav>
         <div className="header-actions">
-          <a className="header-icon" href="#courses" aria-label="Поиск">
-            ⌕
-          </a>
           <button
             className="language"
             aria-label={language === "ru" ? "Кыргызча" : "Русский"}
@@ -165,9 +162,6 @@ export default function Landing({
           >
             {language.toUpperCase()} ⌄
           </button>
-          <a className="header-icon" href="#consultation" aria-label="Профиль">
-            ◉
-          </a>
           <label className="theme-switch">
             <input 
               type="checkbox" 
