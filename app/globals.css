@@ -3020,8 +3020,8 @@ html[data-theme="dark"] .pill {
 /* Unified white and royalblue theme */
 :root {
   --background: #ffffff;
-  --foreground: #4169e1;
-  --muted: #4169e1;
+  --foreground: #000000;
+  --muted: #333333;
   --line: #4169e1;
   --surface: #ffffff;
   --accent: #4169e1;
