@@ -2,8 +2,9 @@
 
 import { useActionState, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { submitLead } from "../actions";
-import { kyrgyzView } from "./kyrgyz";
 import Link from "next/link";
+import { catalogs, isLocale, localeCookieName, type Locale } from "../i18n/catalogs";
+import { localizeView } from "../i18n/localize-view";
 
 import { courses } from "@/lib/courses";
 
@@ -51,12 +52,13 @@ const navItems = [
   { id: "address", label: "Адрес", href: "#contacts", section: "#contacts" },
   { id: "contact", label: "Связаться", href: "#consultation", section: "#consultation" },
 ];
-function Brand() {
+function Brand({ locale }: { locale: Locale }) {
+  const messages = catalogs[locale];
   return (
-    <a href="#main" className="brand" aria-label="Окурмэн айти — главная">
-      <img src="/logo.png" alt="Окурмэн айти" className="brand-icon" />
+    <a href="#main" className="brand" aria-label={messages["Окурмэн айти — главная"]}>
+      <img src="/logo.png" alt={messages["Окурмэн айти"]} className="brand-icon" />
       <span>
-        окурмэн<span className="brand-sub">айти мектеби</span>
+        {messages["окурмэн"]}<span className="brand-sub">{messages["айти мектеби"]}</span>
       </span>
     </a>
   );
@@ -70,11 +72,12 @@ export default function Landing({
   initialFilter = "all",
   initialCourse = "undecided",
 }: {
-  initialLanguage?: string;
+  initialLanguage?: Locale;
   initialFilter?: string;
   initialCourse?: string;
 }) {
-  const [language, setLanguage] = useState(initialLanguage === "ky" ? "ky" : "ru");
+  const [language, setLanguage] = useState<Locale>(initialLanguage);
+  const [languageMenuOpen, setLanguageMenuOpen] = useState(false);
   const [dark, setDark] = useState(false);
   const [activeNav, setActiveNav] = useState("home");
   const [indicator, setIndicator] = useState({ left: 0, width: 0, ready: false });
@@ -90,6 +93,8 @@ export default function Landing({
   const navRef = useRef<HTMLElement>(null);
   const activeNavLinkRef = useRef<HTMLAnchorElement>(null);
   const previousNavRef = useRef(activeNav);
+  const languageControlRef = useRef<HTMLDivElement>(null);
+  const languageMenuRef = useRef<HTMLDivElement>(null);
 
   // Каждое слово получает собственную анимацию раз в пять секунд.
   useEffect(() => {
@@ -157,12 +162,19 @@ export default function Landing({
         "direction",
       );
       setFilter(selected === "code" || selected === "start" ? selected : "all");
-      const lang =
-        new URLSearchParams(window.location.search).get("lang") === "ky"
-          ? "ky"
-          : "ru";
+      const cookieLocale = document.cookie
+        .split("; ")
+        .find((cookie) => cookie.startsWith(`${localeCookieName}=`))
+        ?.split("=")[1];
+      const queryLocale = new URLSearchParams(window.location.search).get("lang");
+      const lang = isLocale(cookieLocale)
+        ? cookieLocale
+        : isLocale(queryLocale)
+          ? queryLocale
+          : initialLanguage;
       setLanguage(lang);
-      document.documentElement.lang = lang;
+      document.documentElement.lang = lang === "kg" ? "ky" : lang;
+      document.title = catalogs[lang]["__meta.title"];
       setDark(document.documentElement.dataset.theme === "dark");
     };
     const id = requestAnimationFrame(sync);
@@ -171,7 +183,39 @@ export default function Landing({
       cancelAnimationFrame(id);
       window.removeEventListener("popstate", sync);
     };
-  }, []);
+  }, [initialLanguage]);
+  useEffect(() => {
+    document.documentElement.lang = language === "kg" ? "ky" : language;
+    document.title = catalogs[language]["__meta.title"];
+    const secure = window.location.protocol === "https:" ? "; secure" : "";
+    document.cookie = `${localeCookieName}=${language}; path=/; max-age=31536000; samesite=lax${secure}`;
+  }, [language]);
+  useEffect(() => {
+    if (!languageMenuOpen) return;
+    const handlePointerDown = (event: PointerEvent) => {
+      if (!languageControlRef.current?.contains(event.target as Node)) {
+        setLanguageMenuOpen(false);
+      }
+    };
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setLanguageMenuOpen(false);
+        languageControlRef.current?.querySelector<HTMLButtonElement>(".language-trigger")?.focus();
+      }
+    };
+    document.addEventListener("pointerdown", handlePointerDown);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("pointerdown", handlePointerDown);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [languageMenuOpen]);
+  useEffect(() => {
+    if (!languageMenuOpen) return;
+    languageMenuRef.current
+      ?.querySelector<HTMLButtonElement>('[aria-checked="true"]')
+      ?.focus();
+  }, [languageMenuOpen]);
   function changeTheme() {
     const next =
       document.documentElement.dataset.theme === "dark" ? "light" : "dark";
@@ -191,13 +235,24 @@ export default function Landing({
     window.history.pushState({}, "", url);
   }
   function changeLanguage(next: string) {
-    if (next !== "ru" && next !== "ky") return;
+    if (!isLocale(next)) return;
     setLanguage(next);
-    document.documentElement.lang = next;
     const url = new URL(window.location.href);
     if (next === "ru") url.searchParams.delete("lang");
-    else url.searchParams.set("lang", "ky");
+    else url.searchParams.set("lang", next);
     window.history.pushState({}, "", url);
+  }
+  function handleLanguageMenuKeyDown(event: React.KeyboardEvent<HTMLDivElement>) {
+    if (!languageMenuRef.current || !["ArrowDown", "ArrowUp", "Home", "End"].includes(event.key)) return;
+    event.preventDefault();
+    const options = Array.from(languageMenuRef.current.querySelectorAll<HTMLButtonElement>(".language-option"));
+    const currentIndex = options.indexOf(document.activeElement as HTMLButtonElement);
+    const nextIndex = event.key === "Home"
+      ? 0
+      : event.key === "End"
+        ? options.length - 1
+        : (currentIndex + (event.key === "ArrowDown" ? 1 : options.length - 1)) % options.length;
+    options[nextIndex]?.focus();
   }
   const content = (
     <>
@@ -228,21 +283,60 @@ export default function Landing({
       </a>
       <header className="header">
         <div className="header-top">
-          <Brand />
+          <Brand locale={language} />
           <div className="header-actions">
-            <label className="language-control">
-              <span className="sr-only">Язык</span>
-              <select
-                className="language-picker"
+            <div
+              className="language-control"
+              ref={languageControlRef}
+              onBlur={(event) => {
+                if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
+                  setLanguageMenuOpen(false);
+                }
+              }}
+            >
+              <button
+                className="language-trigger"
+                type="button"
                 aria-label="Язык"
-                value={language}
-                onChange={(event) => changeLanguage(event.target.value)}
+                aria-haspopup="menu"
+                aria-expanded={languageMenuOpen}
+                aria-controls="language-menu"
+                onClick={() => setLanguageMenuOpen((open) => !open)}
               >
-                <option value="ky">KG</option>
-                <option value="ru">RU</option>
-                <option value="en" disabled>EN</option>
-              </select>
-            </label>
+                {language.toUpperCase()}
+              </button>
+              {languageMenuOpen && (
+                <div
+                  className="language-menu"
+                  id="language-menu"
+                  role="menu"
+                  aria-label="Язык"
+                  ref={languageMenuRef}
+                  onKeyDown={handleLanguageMenuKeyDown}
+                >
+                  {([
+                    ["ru", "RU"],
+                    ["kg", "KG"],
+                    ["en", "EN"],
+                  ] as const).map(([locale, label], index) => (
+                    <button
+                      className={language === locale ? "language-option is-selected" : "language-option"}
+                      type="button"
+                      role="menuitemradio"
+                      aria-checked={language === locale}
+                      key={locale}
+                      style={{ "--option-index": index } as React.CSSProperties}
+                      onClick={() => {
+                        changeLanguage(locale);
+                        setLanguageMenuOpen(false);
+                      }}
+                    >
+                      <span className="language-option-name">{label}</span>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
           <label className="theme-switch">
             <input 
               type="checkbox" 
@@ -1010,7 +1104,7 @@ export default function Landing({
       </main>
       <footer id="contacts" className="section-wrap">
         <div className="footer-top">
-          <Brand />
+          <Brand locale={language} />
           <p>Учись. Создавай. Становись собой.</p>
           <a href="#main" className="back-top" aria-label="Наверх">
             ↑
@@ -1033,5 +1127,5 @@ export default function Landing({
       </footer>
     </>
   );
-  return language === "ky" ? kyrgyzView(content) : content;
+  return localizeView(content, catalogs[language]);
 }

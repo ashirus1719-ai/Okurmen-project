@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
+import { cookies } from "next/headers";
 import "./globals.css";
+import { catalogs, localeCookieName, resolveLocale } from "./i18n/catalogs";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -14,27 +16,32 @@ const jetbrainsMono = JetBrains_Mono({
   display: "swap",
 });
 
-export const metadata: Metadata = {
-  title: "Окурмэн айти — учись, создавай, становись разработчиком",
-  description:
-    "Frontend, backend и первые шаги в IT. Практика, проекты и поддержка ментора в Окурмэн айти. Выбери направление и запишись на консультацию.",
-  openGraph: {
-    title: "Окурмэн айти — твоя новая точка старта",
-    description:
-      "От первой строки кода до своего проекта. Обучение frontend и backend с поддержкой ментора.",
-    locale: "ru_RU",
-    type: "website",
-  },
-  icons: {
-    icon: "/logo-favicon.png",
-    shortcut: "/logo-favicon.png",
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const cookieStore = await cookies();
+  const locale = resolveLocale(cookieStore.get(localeCookieName)?.value);
+  const messages = catalogs[locale];
+  return {
+    title: messages["__meta.title"],
+    description: messages["__meta.description"],
+    openGraph: {
+      title: messages["__meta.ogTitle"],
+      description: messages["__meta.ogDescription"],
+      locale: locale === "ru" ? "ru_RU" : locale === "kg" ? "ky_KG" : "en_US",
+      type: "website",
+    },
+    icons: {
+      icon: "/logo-favicon.png",
+      shortcut: "/logo-favicon.png",
+    },
+  };
+}
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default async function RootLayout({ children }: LayoutProps<"/">) {
+  const cookieStore = await cookies();
+  const locale = resolveLocale(cookieStore.get(localeCookieName)?.value);
   return (
     <html
-      lang="ru"
+      lang={locale === "kg" ? "ky" : locale}
       suppressHydrationWarning
       className={`${inter.variable} ${jetbrainsMono.variable} h-full antialiased`}
     >
