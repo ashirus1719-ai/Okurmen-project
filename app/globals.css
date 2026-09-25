@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
 @import "tailwindcss";
 :root {
   --background: #faf9f5;
@@ -12,12 +13,20 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-inter);
-  --font-mono: var(--font-jetbrains-mono);
+  --font-sans: "Ubuntu", sans-serif;
+  --font-mono: "Ubuntu", sans-serif;
 }
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 35px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
 }
 * {
   box-sizing: border-box;
@@ -26,9 +35,12 @@ body {
   margin: 0;
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-family: "Ubuntu", sans-serif;
   font-size: 15px;
   -webkit-font-smoothing: antialiased;
+}
+body * {
+  font-family: "Ubuntu", sans-serif !important;
 }
 button,
 input,
@@ -838,7 +850,7 @@ p {
   color: var(--muted);
 }
 .skills-ribbon {
-  border-block: 1px solid var(--line);
+  border: 0;
   background: #f0f0e9;
   overflow: hidden;
 }
@@ -3029,6 +3041,9 @@ html[data-theme="dark"] .pill {
   --green: #4169e1;
   --theme-white: #ffffff;
   --theme-blue: #4169e1;
+  --ambient-grid: rgba(65, 105, 225, 0.15);
+  --ambient-node: rgba(65, 105, 225, 0.34);
+  --ambient-symbol: rgba(65, 105, 225, 0.28);
 }
 html[data-theme="dark"] {
   --background: #1d1f2c;
@@ -3041,6 +3056,9 @@ html[data-theme="dark"] {
   --green: #959db1;
   --theme-white: #f3fdff;
   --theme-blue: #1d1f2c;
+  --ambient-grid: rgba(219, 228, 255, 0.11);
+  --ambient-node: rgba(219, 228, 255, 0.24);
+  --ambient-symbol: rgba(219, 228, 255, 0.24);
 }
 html[data-theme="dark"] .theme-switch {
   --container-light-bg: #3f4047;
@@ -3155,4 +3173,255 @@ textarea {
   background: var(--background) !important;
   color: var(--foreground) !important;
   border-color: var(--line) !important;
+}
+.skills-ribbon {
+  width: 100%;
+  border: 0;
+  background: var(--background) !important;
+  overflow: hidden;
+}
+.skills-ribbon > .skills-track {
+  display: flex;
+  width: max-content;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  overflow: visible;
+  gap: 0;
+  animation: skills-marquee-right 36s linear infinite;
+  will-change: transform;
+}
+.skills-group {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 48px;
+  padding: 24px 24px;
+  white-space: nowrap;
+}
+.skills-group .ribbon-item {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  height: 40px;
+  min-height: 40px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--tech-color) !important;
+}
+.ribbon-logo {
+  display: block;
+  flex: 0 0 30px;
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+  object-position: center;
+}
+.ribbon-logo--team {
+  fill: none;
+  stroke: var(--tech-color);
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.ribbon-item--aws .ribbon-logo {
+  flex-basis: 42px;
+  width: 42px;
+  height: 30px;
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+}
+.ribbon-item--html { --tech-color: #e34f26; }
+.ribbon-item--css { --tech-color: #663399; }
+.ribbon-item--javascript { --tech-color: #8a6d00; }
+.ribbon-item--react { --tech-color: #087ea4; }
+.ribbon-item--node { --tech-color: #2e7d32; }
+.ribbon-item--postgres { --tech-color: #336791; }
+.ribbon-item--git { --tech-color: #e34f26; }
+.ribbon-item--github { --tech-color: #24292f; }
+.ribbon-item--typescript { --tech-color: #3178c6; }
+.ribbon-item--next { --tech-color: #111111; }
+.ribbon-item--python { --tech-color: #3776ab; }
+.ribbon-item--java { --tech-color: #b45f06; }
+.ribbon-item--csharp { --tech-color: #68217a; }
+.ribbon-item--cpp { --tech-color: #00599c; }
+.ribbon-item--php { --tech-color: #777bb4; }
+.ribbon-item--go { --tech-color: #007d9c; }
+.ribbon-item--rust { --tech-color: #ce422b; }
+.ribbon-item--docker { --tech-color: #2496ed; }
+.ribbon-item--kubernetes { --tech-color: #326ce5; }
+.ribbon-item--aws { --tech-color: #9a5b00; }
+.ribbon-item--soft { --tech-color: #7652a8; }
+html[data-theme="dark"] .ribbon-item--html { --tech-color: #ff7043; }
+html[data-theme="dark"] .ribbon-item--css { --tech-color: #e879f9; }
+html[data-theme="dark"] .ribbon-item--javascript { --tech-color: #f7df1e; }
+html[data-theme="dark"] .ribbon-item--react { --tech-color: #61dafb; }
+html[data-theme="dark"] .ribbon-item--node { --tech-color: #68a063; }
+html[data-theme="dark"] .ribbon-item--postgres { --tech-color: #6ba5d7; }
+html[data-theme="dark"] .ribbon-item--git { --tech-color: #f05032; }
+html[data-theme="dark"] .ribbon-item--github { --tech-color: #f0f6fc; }
+html[data-theme="dark"] .ribbon-item--typescript { --tech-color: #5ba4f5; }
+html[data-theme="dark"] .ribbon-item--next { --tech-color: #ffffff; }
+html[data-theme="dark"] .ribbon-item--python { --tech-color: #7ab8f5; }
+html[data-theme="dark"] .ribbon-item--java { --tech-color: #ffad5c; }
+html[data-theme="dark"] .ribbon-item--csharp { --tech-color: #d58bea; }
+html[data-theme="dark"] .ribbon-item--cpp { --tech-color: #5eb6ff; }
+html[data-theme="dark"] .ribbon-item--php { --tech-color: #b4b7f0; }
+html[data-theme="dark"] .ribbon-item--go { --tech-color: #5bd6f5; }
+html[data-theme="dark"] .ribbon-item--rust { --tech-color: #ff795f; }
+html[data-theme="dark"] .ribbon-item--docker { --tech-color: #65b9ff; }
+html[data-theme="dark"] .ribbon-item--kubernetes { --tech-color: #7c9fff; }
+html[data-theme="dark"] .ribbon-item--aws { --tech-color: #ffb648; }
+html[data-theme="dark"] .ribbon-item--soft { --tech-color: #c9a4ff; }
+@media (max-width: 767px) {
+  .skills-group .ribbon-item {
+    font-size: 15px;
+    gap: 9px;
+    height: 36px;
+    min-height: 36px;
+    padding: 0;
+  }
+  .ribbon-logo {
+    flex-basis: 26px;
+    width: 26px;
+    height: 26px;
+  }
+  .ribbon-item--aws .ribbon-logo {
+    flex-basis: 38px;
+    width: 38px;
+  }
+  .skills-group {
+    gap: 32px;
+    padding-inline: 16px;
+  }
+}
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+}
+body::before {
+  z-index: 40;
+  opacity: 0.34;
+  background-image:
+    linear-gradient(to right, var(--ambient-grid) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--ambient-grid) 1px, transparent 1px),
+    radial-gradient(circle, var(--ambient-node) 1.2px, transparent 1.6px);
+  background-size: 72px 72px, 72px 72px, 288px 288px;
+  animation: ambient-grid-drift 54s linear infinite;
+}
+.ambient-layer {
+  position: fixed;
+  z-index: 41;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  color: var(--ambient-symbol);
+}
+.header {
+  position: relative;
+  z-index: 50;
+}
+@keyframes ambient-grid-drift {
+  to {
+    background-position: 72px 72px, -72px 72px, 144px -144px;
+  }
+}
+.ambient-code,
+.ambient-mark {
+  position: absolute;
+  display: block;
+  opacity: 0.13;
+  will-change: transform;
+}
+.ambient-code {
+  color: var(--ambient-symbol);
+  font-family: "Ubuntu", monospace !important;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+}
+.ambient-code b { color: var(--accent); font-weight: 700; }
+.ambient-code i { color: #2c91b9; font-style: normal; }
+.ambient-code em { color: #8b6eb7; font-style: normal; }
+.ambient-code--one { top: 13%; left: 4%; }
+.ambient-code--two { top: 32%; right: 7%; }
+.ambient-code--three { bottom: 23%; left: 5%; }
+.ambient-code--four { top: 65%; right: 10%; }
+.ambient-code--five { top: 23%; left: 42%; }
+.ambient-code--six { bottom: 11%; right: 39%; }
+.ambient-code--seven { top: 47%; left: 19%; }
+.ambient-code--eight { bottom: 38%; right: 25%; }
+.ambient-code--nine { top: 8%; right: 18%; }
+.ambient-code--ten { top: 54%; left: 5%; }
+.ambient-code--eleven { bottom: 31%; left: 35%; }
+.ambient-code--twelve { top: 72%; right: 30%; }
+.ambient-code--thirteen { top: 27%; right: 5%; }
+.ambient-code--fourteen { bottom: 7%; left: 20%; }
+.ambient-code--fifteen { top: 41%; left: 42%; }
+.ambient-code--sixteen { bottom: 19%; right: 8%; }
+.ambient-code--seventeen { top: 18%; left: 21%; }
+.ambient-code--eighteen { top: 81%; right: 45%; }
+.ambient-code--nineteen { top: 57%; right: 16%; }
+.ambient-code--twenty { bottom: 43%; left: 8%; }
+.ambient-drift-a { animation: ambient-drift-a 16s ease-in-out -5s infinite alternate; }
+.ambient-drift-b { animation: ambient-drift-b 19s ease-in-out -12s infinite alternate; }
+.ambient-drift-c { animation: ambient-drift-c 14s ease-in-out -8s infinite alternate; }
+.ambient-drift-d { animation: ambient-drift-d 22s ease-in-out -3s infinite alternate; }
+@keyframes ambient-drift-a {
+  from { transform: translate3d(-3px, 5px, 0) rotate(-2deg); }
+  to { transform: translate3d(13px, -18px, 0) rotate(3deg); }
+}
+@keyframes ambient-drift-b {
+  from { transform: translate3d(7px, -8px, 0) rotate(2deg); }
+  to { transform: translate3d(-16px, 12px, 0) rotate(-4deg); }
+}
+@keyframes ambient-drift-c {
+  from { transform: translate3d(-8px, -4px, 0) rotate(3deg); }
+  to { transform: translate3d(10px, 17px, 0) rotate(-2deg); }
+}
+@keyframes ambient-drift-d {
+  from { transform: translate3d(5px, 8px, 0) rotate(-3deg); }
+  to { transform: translate3d(-12px, -15px, 0) rotate(2deg); }
+}
+@keyframes skills-marquee-right {
+  from { transform: translateX(-50%); }
+  to { transform: translateX(0); }
+}
+@media (max-width: 767px) {
+  .skills-ribbon > .skills-track {
+    overflow: visible;
+    padding: 0;
+  }
+  .skills-group {
+    gap: 20px;
+    padding: 20px;
+  }
+  .skills-group .ribbon-item {
+    gap: 16px;
+  }
+  .ambient-code {
+    font-size: 11px;
+  }
+  .ambient-code--five,
+  .ambient-code--six,
+  .ambient-code--eight,
+  .ambient-code--eleven,
+  .ambient-code--twelve,
+  .ambient-code--fourteen,
+  .ambient-code--sixteen,
+  .ambient-code--eighteen,
+  .ambient-code--twenty {
+    display: none;
+  }
 }

@@ -134,6 +134,28 @@ export default function Landing({
   }
   const content = (
     <>
+      <div className="ambient-layer" aria-hidden="true">
+        <span className="ambient-code ambient-code--one ambient-drift-a"><b>&lt;main</b> <i>className</i>=<em>&quot;app&quot;</em><b>&gt;</b></span>
+        <span className="ambient-code ambient-code--two ambient-drift-b"><b>const</b> app <i>=</i> <em>createRoot</em>();</span>
+        <span className="ambient-code ambient-code--three ambient-drift-c"><i>.button:hover</i> &#123; <em>transform</em>: translateY(-2px); &#125;</span>
+        <span className="ambient-code ambient-code--four ambient-drift-d"><b>function</b> App() =&gt; &lt;React /&gt;</span>
+        <span className="ambient-code ambient-code--five ambient-drift-b"><b>$</b> git push origin main</span>
+        <span className="ambient-code ambient-code--six ambient-drift-a"><b>SELECT</b> * <b>FROM</b> courses;</span>
+        <span className="ambient-code ambient-code--seven ambient-drift-d"><i>fetch</i>(&quot;/api/courses&quot;)</span>
+        <span className="ambient-code ambient-code--eight ambient-drift-c">npm run build <b>✓</b></span>
+        <span className="ambient-code ambient-code--nine ambient-drift-c"><b>import</b> &#123; useState &#125; <b>from</b> &quot;react&quot;;</span>
+        <span className="ambient-code ambient-code--ten ambient-drift-a"><i>.hero</i> &#123; display: grid; gap: 2rem; &#125;</span>
+        <span className="ambient-code ambient-code--eleven ambient-drift-b"><b>export default</b> App;</span>
+        <span className="ambient-code ambient-code--twelve ambient-drift-d"><b>await</b> response.<i>json</i>();</span>
+        <span className="ambient-code ambient-code--thirteen ambient-drift-a">docker compose up</span>
+        <span className="ambient-code ambient-code--fourteen ambient-drift-c"><b>type</b> Props = &#123; children: ReactNode &#125;</span>
+        <span className="ambient-code ambient-code--fifteen ambient-drift-d"><b>return</b> &lt;CourseCard &#123;...props&#125; /&gt;;</span>
+        <span className="ambient-code ambient-code--sixteen ambient-drift-b">@media (max-width: 768px) &#123; ... &#125;</span>
+        <span className="ambient-code ambient-code--seventeen ambient-drift-a"><i>useEffect</i>(() =&gt; &#123; &#125;, []);</span>
+        <span className="ambient-code ambient-code--eighteen ambient-drift-c">npm install next</span>
+        <span className="ambient-code ambient-code--nineteen ambient-drift-b"><b>if</b> (status === &quot;ready&quot;)</span>
+        <span className="ambient-code ambient-code--twenty ambient-drift-d">git status --short</span>
+      </div>
       <a className="skip-link" href="#main">
         К содержимому
       </a>
@@ -361,20 +383,53 @@ export default function Landing({
           </div>
         </section>
         <div className="skills-ribbon">
-          <div>
-            {[
-              "HTML & CSS",
-              "JavaScript",
-              "React",
-              "Node.js",
-              "PostgreSQL",
-              "Git & GitHub",
-              "Soft skills",
-            ].map((s, i) => (
-              <span className="ribbon-item" key={s}>
-                {i > 0 && <i aria-hidden="true">✳</i>}
-                {s}
-              </span>
+          <div className="skills-track">
+            {[0, 1].map((copy) => (
+              <div className="skills-group" aria-hidden={copy === 1} key={copy}>
+                {[
+                  { id: "html", label: "HTML", logo: "html5", color: "E34F26" },
+                  { id: "css", label: "CSS", logo: "css", color: "663399" },
+                  { id: "javascript", label: "JavaScript", logo: "javascript", color: "B38B00" },
+                  { id: "react", label: "React", logo: "react", color: "087EA4" },
+                  { id: "node", label: "Node.js", logo: "nodedotjs", color: "5FA04E" },
+                  { id: "postgres", label: "PostgreSQL", logo: "postgresql", color: "336791" },
+                  { id: "git", label: "Git", logo: "git", color: "F05032" },
+                  { id: "github", label: "GitHub", logo: "github", color: "24292F" },
+                  { id: "typescript", label: "TypeScript", logo: "typescript", color: "3178C6" },
+                  { id: "next", label: "Next.js", logo: "nextdotjs", color: "111111" },
+                  { id: "python", label: "Python", logo: "python", color: "3776AB" },
+                  { id: "java", label: "Java", logo: "openjdk", color: "F89820" },
+                  { id: "csharp", label: "C#", logo: "dotnet", color: "512BD4" },
+                  { id: "cpp", label: "C++", logo: "cplusplus", color: "00599C" },
+                  { id: "php", label: "PHP", logo: "php", color: "777BB4" },
+                  { id: "go", label: "Go", logo: "go", color: "00ADD8" },
+                  { id: "rust", label: "Rust", logo: "rust", color: "CE422B" },
+                  { id: "docker", label: "Docker", logo: "docker", color: "2496ED" },
+                  { id: "kubernetes", label: "Kubernetes", logo: "kubernetes", color: "326CE5" },
+                  { id: "aws", label: "AWS", logo: "aws", color: "FF9900" },
+                  { id: "soft", label: "Soft skills", logo: null, color: "7652A8" },
+                ].map(({ id, label, logo, color }) => (
+                  <span className={`ribbon-item ribbon-item--${id}`} key={id}>
+                    {logo ? (
+                      <img
+                        className="ribbon-logo"
+                        src={logo === "aws" ? "https://upload.wikimedia.org/wikipedia/commons/9/93/Amazon_Web_Services_Logo.svg" : `https://cdn.simpleicons.org/${logo}/${color}`}
+                        alt=""
+                        aria-hidden="true"
+                        loading="lazy"
+                      />
+                    ) : (
+                      <svg className="ribbon-logo ribbon-logo--team" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+                        <circle cx="16" cy="10" r="4" />
+                        <circle cx="6" cy="13" r="3" />
+                        <circle cx="26" cy="13" r="3" />
+                        <path d="M8 26v-2a8 8 0 0 1 16 0v2M1 25v-2a5 5 0 0 1 6-4.9M31 25v-2a5 5 0 0 0-6-4.9" />
+                      </svg>
+                    )}
+                    {id !== "aws" && <span>{label}</span>}
+                  </span>
+                ))}
+              </div>
             ))}
           </div>
         </div>
