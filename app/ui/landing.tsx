@@ -45,7 +45,7 @@ const faqs = [
 function Brand() {
   return (
     <a href="#main" className="brand" aria-label="Окурмен айти — главная">
-      <img src="/okurman-it.jpg" alt="Окурмен айти" className="brand-icon" />
+      <img src="/logo.png" alt="Окурмен айти" className="brand-icon" />
       <span>
         окурмен<span className="brand-sub">айти мектеби</span>
       </span>

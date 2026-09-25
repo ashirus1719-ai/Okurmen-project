@@ -25,6 +25,10 @@ export const metadata: Metadata = {
     locale: "ru_RU",
     type: "website",
   },
+  icons: {
+    icon: "/logo.png",
+    shortcut: "/logo.png",
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
