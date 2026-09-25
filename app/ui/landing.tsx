@@ -4,9 +4,6 @@ import { useActionState, useEffect, useState } from "react";
 import { submitLead } from "../actions";
 import { kyrgyzView } from "./kyrgyz";
 import Link from "next/link";
-import ru from "../i18n/ru.json";
-import ky from "../i18n/ky.json";
-import en from "../i18n/en.json";
 
 import { courses } from "@/lib/courses";
 
@@ -45,16 +42,12 @@ const faqs = [
     "Нет, мы не обещаем гарантированную работу. Обучение помогает развивать навыки и создавать проекты. Трудоустройство зависит от подготовки, практики и требований работодателей.",
   ],
 ];
-const translations = { ru, ky, en } as const;
-type Language = keyof typeof translations;
-
-function Brand({ language = "ru" }: { language?: Language }) {
-  const copy = translations[language];
+function Brand() {
   return (
-    <a href="#main" className="brand" aria-label={copy.brand.aria}>
-      <img src="/okurman-it.svg" alt="Окурмен айти" className="brand-icon" />
+    <a href="#main" className="brand" aria-label="Окурмен айти — главная">
+      <img src="/okurman-it.jpg" alt="Окурмен айти" className="brand-icon" />
       <span>
-        окурмен<span className="brand-sub">{copy.brand.tagline}</span>
+        окурмен<span className="brand-sub">айти мектеби</span>
       </span>
     </a>
   );
@@ -72,9 +65,7 @@ export default function Landing({
   initialFilter?: string;
   initialCourse?: string;
 }) {
-  const [language, setLanguage] = useState<Language>(
-    initialLanguage === "ky" || initialLanguage === "en" ? initialLanguage : "ru",
-  );
+  const [language, setLanguage] = useState(initialLanguage);
   const [dark, setDark] = useState(false);
   const [menu, setMenu] = useState(false);
   const [filter, setFilter] = useState(initialFilter);
@@ -99,17 +90,10 @@ export default function Landing({
         "direction",
       );
       setFilter(selected === "code" || selected === "start" ? selected : "all");
-      const queryLanguage = new URLSearchParams(window.location.search).get("lang");
-      const cookieLanguage = document.cookie
-        .split("; ")
-        .find((item) => item.startsWith("okurmen-locale="))
-        ?.split("=")[1];
-      const lang: Language =
-        queryLanguage === "ky" || queryLanguage === "en"
-          ? queryLanguage
-          : cookieLanguage === "ky" || cookieLanguage === "en"
-            ? cookieLanguage
-            : "ru";
+      const lang =
+        new URLSearchParams(window.location.search).get("lang") === "ky"
+          ? "ky"
+          : "ru";
       setLanguage(lang);
       document.documentElement.lang = lang;
       setDark(document.documentElement.dataset.theme === "dark");
@@ -139,41 +123,52 @@ export default function Landing({
     else url.searchParams.set("direction", id);
     window.history.pushState({}, "", url);
   }
-  function changeLanguage(next: Language) {
+  function changeLanguage() {
+    const next = language === "ru" ? "ky" : "ru";
     setLanguage(next);
     document.documentElement.lang = next;
-    document.cookie = `okurmen-locale=${next}; path=/; max-age=31536000; samesite=lax`;
     const url = new URL(window.location.href);
     if (next === "ru") url.searchParams.delete("lang");
-    else url.searchParams.set("lang", next);
+    else url.searchParams.set("lang", "ky");
     window.history.pushState({}, "", url);
   }
-  const copy = translations[language];
   const content = (
     <>
       <a className="skip-link" href="#main">
         К содержимому
       </a>
       <header className="header">
-        <div className="header-top">
-          <Brand language={language} />
-          <div className="header-actions">
-            <a className="login-link" href="#consultation">{copy.actions.login}</a>
-            <label className="language-select">
-              <span className="sr-only">{copy.actions.login}</span>
-              <select value={language} onChange={(event) => changeLanguage(event.target.value as Language)}>
-                {(Object.keys(translations) as Language[]).map((locale) => (
-                  <option key={locale} value={locale}>{copy.languages[locale]}</option>
-                ))}
-              </select>
-            </label>
+        <Brand />
+        <nav
+          aria-label="Основная навигация"
+          className={menu ? "nav open" : "nav"}
+        >
+          {[
+            ["courses", "Курсы"],
+            ["approach", "Как учим"],
+            ["community", "Сообщество"],
+            ["faq", "FAQ"],
+          ].map(([id, label]) => (
+            <a href={`#${id}`} key={id} onClick={() => setMenu(false)}>
+              {label}
+            </a>
+          ))}
+        </nav>
+        <div className="header-actions">
+          <button
+            className="language"
+            aria-label={language === "ru" ? "Кыргызча" : "Русский"}
+            onClick={changeLanguage}
+          >
+            {language.toUpperCase()} ⌄
+          </button>
           <label className="theme-switch">
             <input 
               type="checkbox" 
               className="theme-switch__checkbox"
               checked={dark}
               onChange={changeTheme}
-              aria-label={copy.actions.theme}
+              aria-label={language === "ru" ? "Тёмная тема" : "Караңгы тема"}
             />
             <div className="theme-switch__container">
               <div className="theme-switch__clouds"></div>
@@ -193,32 +188,18 @@ export default function Landing({
               </div>
             </div>
           </label>
+          <a className="button button-small desktop-cta" href="#courses">
+            Выбрать курс <span>↗</span>
+          </a>
           <button
             className="menu-button"
-            aria-label={copy.actions.menu}
+            aria-label="Меню"
             aria-expanded={menu}
             onClick={() => setMenu(!menu)}
           >
             {menu ? "✕" : "☰"}
           </button>
-          </div>
         </div>
-        <nav
-          aria-label={copy.nav.home}
-          className={menu ? "nav open" : "nav"}
-        >
-          {[
-            ["main", copy.nav.home],
-            ["courses", copy.nav.courses],
-            ["playground", copy.nav.tasks],
-            ["faq", copy.nav.help],
-            ["community", copy.nav.about],
-            ["contacts", copy.nav.address],
-            ["consultation", copy.nav.contact],
-          ].map(([id, label]) => (
-            <a href={`#${id}`} key={id} onClick={() => setMenu(false)}>{label}</a>
-          ))}
-        </nav>
       </header>
       <main id="main">
         <section className="hero section-wrap">
@@ -380,16 +361,22 @@ export default function Landing({
           </div>
         </section>
         <div className="skills-ribbon">
-          {[0, 1].map((group) => (
-            <div aria-hidden={group === 1} key={group}>
-              {["HTML & CSS", "JavaScript", "React", "Node.js", "PostgreSQL", "Git & GitHub", "TypeScript", "Python", "Soft skills"].map((s, i) => (
-                <span className="ribbon-item" key={`${group}-${s}`}>
-                  {i > 0 && <i aria-hidden="true">✳</i>}
-                  {s}
-                </span>
-              ))}
-            </div>
-          ))}
+          <div>
+            {[
+              "HTML & CSS",
+              "JavaScript",
+              "React",
+              "Node.js",
+              "PostgreSQL",
+              "Git & GitHub",
+              "Soft skills",
+            ].map((s, i) => (
+              <span className="ribbon-item" key={s}>
+                {i > 0 && <i aria-hidden="true">✳</i>}
+                {s}
+              </span>
+            ))}
+          </div>
         </div>
         <section id="courses" className="section-wrap section-space">
           <div className="section-heading">
@@ -897,7 +884,7 @@ export default function Landing({
       </main>
       <footer id="contacts" className="section-wrap">
         <div className="footer-top">
-          <Brand language={language} />
+          <Brand />
           <p>Учись. Создавай. Становись собой.</p>
           <a href="#main" className="back-top" aria-label="Наверх">
             ↑
