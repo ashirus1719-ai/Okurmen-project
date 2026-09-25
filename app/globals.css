@@ -3111,13 +3111,3 @@ textarea {
   color: var(--foreground) !important;
   border-color: var(--line) !important;
 }
-.theme-switch {
-  --container-light-bg: var(--theme-blue);
-  --container-night-bg: var(--theme-blue);
-  --sun-bg: var(--theme-white);
-  --moon-bg: var(--theme-white);
-  --spot-color: var(--theme-blue);
-  --stars-color: var(--theme-white);
-  --clouds-color: var(--theme-white);
-  --back-clouds-color: var(--theme-white);
-}
