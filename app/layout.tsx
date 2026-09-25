@@ -15,7 +15,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Окурмен айти — учись, создавай, становись разработчиком",
+  title: "Окурмэн айти — учись, создавай, становись разработчиком",
   description:
     "Frontend, backend и первые шаги в IT. Практика, проекты и поддержка ментора в Окурмен айти. Выбери направление и запишись на консультацию.",
   openGraph: {
