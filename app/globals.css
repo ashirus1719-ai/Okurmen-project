@@ -3052,6 +3052,19 @@ html[data-theme="dark"] .theme-switch {
   --clouds-color: #f4f5f8;
   --back-clouds-color: #777b88;
 }
+html[data-theme="dark"] .consultation-section {
+  background: var(--background) !important;
+  color: var(--foreground) !important;
+}
+html[data-theme="dark"] .consultation-section h2 .serif-accent {
+  color: var(--accent) !important;
+}
+html[data-theme="dark"] .consultation-section .consultation-grid > div > p {
+  color: var(--muted) !important;
+}
+html[data-theme="dark"] .consultation-star {
+  color: var(--muted) !important;
+}
 body {
   background: var(--background) !important;
   color: var(--foreground) !important;
