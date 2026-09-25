@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useEffect, useState } from "react";
+import { useActionState, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { submitLead } from "../actions";
 import { kyrgyzView } from "./kyrgyz";
 import Link from "next/link";
@@ -42,6 +42,15 @@ const faqs = [
     "Нет, мы не обещаем гарантированную работу. Обучение помогает развивать навыки и создавать проекты. Трудоустройство зависит от подготовки, практики и требований работодателей.",
   ],
 ];
+const navItems = [
+  { id: "home", label: "Главная", href: "#main", section: ".hero" },
+  { id: "courses", label: "Курсы", href: "#courses", section: "#courses" },
+  { id: "tasks", label: "Задачи", href: "#playground", section: "#playground" },
+  { id: "help", label: "Помощь", href: "#faq", section: "#faq" },
+  { id: "about", label: "О нас", href: "#community", section: "#community" },
+  { id: "address", label: "Адрес", href: "#contacts", section: "#contacts" },
+  { id: "contact", label: "Связаться", href: "#consultation", section: "#consultation" },
+];
 function Brand() {
   return (
     <a href="#main" className="brand" aria-label="Окурмэн айти — главная">
@@ -65,9 +74,11 @@ export default function Landing({
   initialFilter?: string;
   initialCourse?: string;
 }) {
-  const [language, setLanguage] = useState(initialLanguage);
+  const [language, setLanguage] = useState(initialLanguage === "ky" ? "ky" : "ru");
   const [dark, setDark] = useState(false);
-  const [menu, setMenu] = useState(false);
+  const [activeNav, setActiveNav] = useState("home");
+  const [indicator, setIndicator] = useState({ left: 0, width: 0, ready: false });
+  const [indicatorMoving, setIndicatorMoving] = useState(false);
   const [filter, setFilter] = useState(initialFilter);
   const [answer, setAnswer] = useState<string | null>(null);
   const [review, setReview] = useState("students");
@@ -76,6 +87,9 @@ export default function Landing({
     status: "idle",
     message: "",
   });
+  const navRef = useRef<HTMLElement>(null);
+  const activeNavLinkRef = useRef<HTMLAnchorElement>(null);
+  const previousNavRef = useRef(activeNav);
 
   // Каждое слово получает собственную анимацию раз в пять секунд.
   useEffect(() => {
@@ -84,6 +98,59 @@ export default function Landing({
     }, 5000);
     return () => clearInterval(interval);
   }, []);
+  useEffect(() => {
+    const visibleSections = new Map<Element, string>();
+    const sections = navItems
+      .map(({ id, section }) => [id, document.querySelector(section)] as const)
+      .filter((entry): entry is readonly [string, Element] => entry[1] !== null);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          const id = sections.find(([, element]) => element === entry.target)?.[0];
+          if (!id) continue;
+          if (entry.isIntersecting) visibleSections.set(entry.target, id);
+          else visibleSections.delete(entry.target);
+        }
+        const nearest = [...visibleSections.entries()].sort(
+          ([a], [b]) =>
+            Math.abs(a.getBoundingClientRect().top - window.innerHeight * 0.28) -
+            Math.abs(b.getBoundingClientRect().top - window.innerHeight * 0.28),
+        )[0];
+        if (nearest) setActiveNav(nearest[1]);
+      },
+      { rootMargin: "-24% 0px -62% 0px", threshold: 0 },
+    );
+    for (const [, section] of sections) observer.observe(section);
+    return () => observer.disconnect();
+  }, []);
+  useLayoutEffect(() => {
+    const nav = navRef.current;
+    const link = activeNavLinkRef.current;
+    if (!nav || !link) return;
+    const updateIndicator = () => {
+      setIndicator({ left: link.offsetLeft, width: link.offsetWidth, ready: true });
+      if (window.innerWidth <= 767) {
+        const left = link.offsetLeft;
+        const right = left + link.offsetWidth;
+        if (left < nav.scrollLeft || right > nav.scrollLeft + nav.clientWidth) {
+          nav.scrollTo({
+            left: left - nav.clientWidth / 2 + link.offsetWidth / 2,
+            behavior: "smooth",
+          });
+        }
+      }
+    };
+    updateIndicator();
+    window.addEventListener("resize", updateIndicator);
+    return () => window.removeEventListener("resize", updateIndicator);
+  }, [activeNav, language]);
+  useEffect(() => {
+    if (previousNavRef.current === activeNav) return;
+    previousNavRef.current = activeNav;
+    setIndicatorMoving(true);
+    const timer = window.setTimeout(() => setIndicatorMoving(false), 420);
+    return () => window.clearTimeout(timer);
+  }, [activeNav]);
   useEffect(() => {
     const sync = () => {
       const selected = new URLSearchParams(window.location.search).get(
@@ -123,8 +190,8 @@ export default function Landing({
     else url.searchParams.set("direction", id);
     window.history.pushState({}, "", url);
   }
-  function changeLanguage() {
-    const next = language === "ru" ? "ky" : "ru";
+  function changeLanguage(next: string) {
+    if (next !== "ru" && next !== "ky") return;
     setLanguage(next);
     document.documentElement.lang = next;
     const url = new URL(window.location.href);
@@ -160,30 +227,22 @@ export default function Landing({
         К содержимому
       </a>
       <header className="header">
-        <Brand />
-        <nav
-          aria-label="Основная навигация"
-          className={menu ? "nav open" : "nav"}
-        >
-          {[
-            ["courses", "Курсы"],
-            ["approach", "Как учим"],
-            ["community", "Сообщество"],
-            ["faq", "FAQ"],
-          ].map(([id, label]) => (
-            <a href={`#${id}`} key={id} onClick={() => setMenu(false)}>
-              {label}
-            </a>
-          ))}
-        </nav>
-        <div className="header-actions">
-          <button
-            className="language"
-            aria-label={language === "ru" ? "Кыргызча" : "Русский"}
-            onClick={changeLanguage}
-          >
-            {language.toUpperCase()} ⌄
-          </button>
+        <div className="header-top">
+          <Brand />
+          <div className="header-actions">
+            <label className="language-control">
+              <span className="sr-only">Язык</span>
+              <select
+                className="language-picker"
+                aria-label="Язык"
+                value={language}
+                onChange={(event) => changeLanguage(event.target.value)}
+              >
+                <option value="ky">KG</option>
+                <option value="ru">RU</option>
+                <option value="en" disabled>EN</option>
+              </select>
+            </label>
           <label className="theme-switch">
             <input 
               type="checkbox" 
@@ -210,18 +269,30 @@ export default function Landing({
               </div>
             </div>
           </label>
-          <a className="button button-small desktop-cta" href="#courses">
-            Выбрать курс <span>↗</span>
+          <a className="header-login" href="#consultation">
+            Войти
           </a>
-          <button
-            className="menu-button"
-            aria-label="Меню"
-            aria-expanded={menu}
-            onClick={() => setMenu(!menu)}
-          >
-            {menu ? "✕" : "☰"}
-          </button>
+          </div>
         </div>
+        <nav ref={navRef} aria-label="Основная навигация" className="nav">
+          <span
+            aria-hidden="true"
+            className={`nav-indicator${indicatorMoving ? " is-moving" : ""}`}
+            style={{ left: indicator.left, width: indicator.width, opacity: indicator.ready ? 1 : 0 }}
+          />
+          {navItems.map(({ id, label, href }) => (
+            <a
+              aria-current={activeNav === id ? "location" : undefined}
+              className={activeNav === id ? "active" : undefined}
+              href={href}
+              key={id}
+              ref={activeNav === id ? activeNavLinkRef : null}
+              onClick={() => setActiveNav(id)}
+            >
+              {label}
+            </a>
+          ))}
+        </nav>
       </header>
       <main id="main">
         <section className="hero section-wrap">

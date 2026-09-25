@@ -3514,3 +3514,211 @@ body::before {
     display: none;
   }
 }
+
+/* Full-width two-row site header */
+.header {
+  position: sticky;
+  z-index: 60;
+  top: 0;
+  display: block;
+  width: 100%;
+  max-width: none;
+  height: auto;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  background: color-mix(in srgb, var(--background) 94%, transparent);
+  backdrop-filter: blur(18px);
+}
+.header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  width: min(100%, 1360px);
+  min-height: 70px;
+  margin-inline: auto;
+  padding: 10px 36px;
+}
+.header .brand {
+  flex: 0 0 auto;
+}
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.language-control {
+  position: relative;
+  display: block;
+  margin: 0;
+}
+.language-picker {
+  appearance: none;
+  min-width: 68px;
+  height: 38px;
+  padding: 0 25px 0 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface) !important;
+  color: var(--foreground) !important;
+  font: 700 11px "Ubuntu", sans-serif;
+  cursor: pointer;
+  transition: border-color .2s ease, background-color .2s ease;
+}
+.language-picker:hover,
+.language-picker:focus-visible {
+  border-color: var(--accent);
+}
+.language-control::after {
+  content: "⌄";
+  position: absolute;
+  top: 8px;
+  right: 9px;
+  color: var(--accent);
+  pointer-events: none;
+}
+.header .theme-switch {
+  flex: 0 0 auto;
+  margin: 0;
+}
+.header-login {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 76px;
+  height: 38px;
+  padding-inline: 14px;
+  border: 1px solid var(--accent);
+  border-radius: 8px;
+  background: var(--accent);
+  color: var(--theme-white);
+  font-size: 12px;
+  font-weight: 700;
+  transition: transform .2s ease, background-color .2s ease, box-shadow .2s ease;
+}
+.header-login:hover {
+  transform: translateY(-1px);
+  background: #5b7ff0;
+  box-shadow: 0 5px 16px color-mix(in srgb, var(--accent) 24%, transparent);
+}
+.header .nav,
+.header .nav.open {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  width: min(100%, 1360px);
+  height: 54px;
+  margin: 0 auto;
+  padding: 0 24px;
+  overflow: visible;
+  border-top: 1px solid color-mix(in srgb, var(--line) 24%, transparent);
+  background: transparent;
+  box-shadow: none;
+}
+.header .nav > a {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 38px;
+  padding: 0 15px;
+  border-radius: 8px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: color .25s ease;
+}
+.header .nav > a:hover,
+.header .nav > a.active {
+  color: var(--accent);
+}
+.header .nav > a.active {
+  font-weight: 700;
+}
+.nav-indicator {
+  position: absolute;
+  z-index: 0;
+  top: 8px;
+  height: 38px;
+  border: 1px solid color-mix(in srgb, var(--accent) 22%, transparent);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+  pointer-events: none;
+  transition: left .52s cubic-bezier(.2,.8,.2,1), width .52s cubic-bezier(.2,.8,.2,1), filter .2s ease, opacity .2s ease;
+}
+.nav-indicator.is-moving {
+  filter: blur(2px);
+  opacity: .72 !important;
+}
+@media (max-width: 767px) {
+  .header-top {
+    min-height: 62px;
+    gap: 8px;
+    padding: 8px 14px;
+  }
+  .header .brand {
+    gap: 8px;
+    font-size: 20px;
+  }
+  .header .brand-icon {
+    width: 34px;
+    height: 34px;
+  }
+  .header .brand-sub {
+    margin-top: 4px;
+    font-size: 7px;
+    letter-spacing: 1.2px;
+  }
+  .header-actions {
+    gap: 8px;
+  }
+  .language-picker {
+    min-width: 58px;
+    height: 34px;
+    padding-left: 9px;
+  }
+  .language-control::after {
+    top: 6px;
+    right: 7px;
+  }
+  .header .theme-switch {
+    --toggle-size: 8px;
+  }
+  .header-login {
+    min-width: 54px;
+    height: 34px;
+    padding-inline: 9px;
+    font-size: 11px;
+  }
+  .header .nav,
+  .header .nav.open {
+    justify-content: flex-start;
+    width: 100%;
+    height: 48px;
+    gap: 2px;
+    padding: 0 10px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .header .nav::-webkit-scrollbar {
+    display: none;
+  }
+  .header .nav > a {
+    height: 34px;
+    padding-inline: 12px;
+    font-size: 11px;
+  }
+  .nav-indicator {
+    top: 7px;
+    height: 34px;
+  }
+}
