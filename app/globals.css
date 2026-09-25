@@ -3042,6 +3042,16 @@ html[data-theme="dark"] {
   --theme-white: #dbe4ff;
   --theme-blue: #4169e1;
 }
+html[data-theme="dark"] .theme-switch {
+  --container-light-bg: #3f4047;
+  --container-night-bg: #1d1f2c;
+  --sun-bg: #e2e5eb;
+  --moon-bg: #e2e5eb;
+  --spot-color: #929aaa;
+  --stars-color: #ffffff;
+  --clouds-color: #f4f5f8;
+  --back-clouds-color: #777b88;
+}
 body {
   background: var(--background) !important;
   color: var(--foreground) !important;
