@@ -19,7 +19,7 @@ export default function DecoyLanding() {
   return (
     <div className={styles.page}>
       <header className={styles.header}>
-        <div className={styles.logo}>💡 OKURMEN IT</div>
+        <div className={styles.logo}>💡 ОКУРМЭН IT</div>
         <nav className={styles.nav} aria-label="Навигация чернового лендинга">
           <a href="#about">О НАС</a>
           <a href="#courses">КУРСЫ</a>
@@ -101,7 +101,7 @@ export default function DecoyLanding() {
       </main>
 
       <footer className={styles.footer}>
-        <b>OKURMEN IT © 2026</b>
+        <b>ОКУРМЭН IT © 2026</b>
         <span>Все права защищены!!!</span>
         <span>Сделано с ❤️ в Кыргызстане</span>
       </footer>

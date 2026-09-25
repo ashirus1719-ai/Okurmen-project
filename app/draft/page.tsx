@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import DecoyLanding from "./decoy-landing";
 
 export const metadata: Metadata = {
-  title: "Окурмен IT — курсы программирования",
+  title: "Окурмэн IT — курсы программирования",
   description: "Курсы программирования для всех.",
   robots: { index: false, follow: false },
 };

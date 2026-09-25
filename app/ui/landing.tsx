@@ -44,10 +44,10 @@ const faqs = [
 ];
 function Brand() {
   return (
-    <a href="#main" className="brand" aria-label="Окурмен айти — главная">
-      <img src="/logo.png" alt="Окурмен айти" className="brand-icon" />
+    <a href="#main" className="brand" aria-label="Окурмэн айти — главная">
+      <img src="/logo.png" alt="Окурмэн айти" className="brand-icon" />
       <span>
-        окурмен<span className="brand-sub">айти мектеби</span>
+        окурмэн<span className="brand-sub">айти мектеби</span>
       </span>
     </a>
   );
@@ -675,7 +675,7 @@ export default function Landing({
           </div>
           <div className="community-grid">
             <div className="community-poster">
-              <span>окурмен / together</span>
+              <span>окурмэн / together</span>
               <div className="poster-letters" aria-hidden="true">
                 <span>о</span>
                 <span>к</span>
@@ -898,7 +898,7 @@ export default function Landing({
           <a href="#consultation">Связаться с нами</a>
         </div>
         <div className="footer-bottom">
-          <span>© {new Date().getFullYear()} Окурмен айти</span>
+          <span>© {new Date().getFullYear()} Окурмэн айти</span>
           <span>
             Адрес, часы работы и прямые контакты готовятся к публикации.
           </span>

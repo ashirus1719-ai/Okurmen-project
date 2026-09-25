@@ -1,4 +1,4 @@
-# Окурмен айти
+# Окурмэн айти
 
 Next.js 16 + Prisma ORM 7 + Neon PostgreSQL. Для разработки используйте Node.js 24.
 

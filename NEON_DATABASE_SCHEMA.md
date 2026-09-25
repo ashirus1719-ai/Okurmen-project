@@ -1,4 +1,4 @@
-# Полная схема базы данных «Окурмен IT» для Neon PostgreSQL
+# Полная схема базы данных «Окурмэн IT» для Neon PostgreSQL
 
 **Источник требований:** `okurmen-it-updated-spec.md`  
 **Целевая СУБД:** Neon PostgreSQL  
