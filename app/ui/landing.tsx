@@ -8,12 +8,12 @@ import Link from "next/link";
 import { courses } from "@/lib/courses";
 
 const changingWords = [
-  { text: "Создавай", color: "#4169e1", effect: "create", mark: "✦" },
-  { text: "Программируй", color: "#4169e1", effect: "code", mark: "</>" },
-  { text: "Разрабатывай", color: "#4169e1", effect: "develop", mark: "{ }" },
-  { text: "Твори", color: "#4169e1", effect: "imagine", mark: "✺" },
-  { text: "Внедряй", color: "#4169e1", effect: "deploy", mark: "↗" },
-  { text: "Запускай", color: "#4169e1", effect: "launch", mark: "➜" },
+  { text: "Создавай", color: "#f0bd28", effect: "create", mark: "✦" },
+  { text: "Программируй", color: "#19b8d1", effect: "code", mark: "</>" },
+  { text: "Разрабатывай", color: "#e56a32", effect: "develop", mark: "{ }" },
+  { text: "Твори", color: "#a86ad1", effect: "imagine", mark: "✺" },
+  { text: "Внедряй", color: "#52a66d", effect: "deploy", mark: "↗" },
+  { text: "Запускай", color: "#e65360", effect: "launch", mark: "➜" },
 ];
 
 const faqs = [
