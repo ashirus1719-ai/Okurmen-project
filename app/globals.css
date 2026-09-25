@@ -3016,3 +3016,108 @@ html[data-theme="dark"] .pill {
     opacity: 1;
   }
 }
+
+/* Unified white and royalblue theme */
+:root {
+  --background: #ffffff;
+  --foreground: #4169e1;
+  --muted: #4169e1;
+  --line: #4169e1;
+  --surface: #ffffff;
+  --accent: #4169e1;
+  --soft: #ffffff;
+  --green: #4169e1;
+  --theme-white: #ffffff;
+  --theme-blue: #4169e1;
+}
+html[data-theme="dark"] {
+  --background: #14204a;
+  --foreground: #dbe4ff;
+  --muted: #b6c5f4;
+  --line: #4169e1;
+  --surface: #1c2d63;
+  --accent: #4169e1;
+  --soft: #1c2d63;
+  --green: #4169e1;
+  --theme-white: #dbe4ff;
+  --theme-blue: #4169e1;
+}
+body {
+  background: var(--background) !important;
+  color: var(--foreground) !important;
+}
+body * {
+  border-color: var(--line);
+}
+.changing-word,
+.hero h1 .serif-accent,
+.course-symbol,
+.lavender .course-symbol,
+.sage .course-symbol,
+.text-button:hover,
+.footer-links a:hover {
+  color: var(--accent) !important;
+}
+.button,
+.filter.active,
+.enrollment-banner,
+.consultation-section {
+  background: var(--accent) !important;
+  border-color: var(--accent) !important;
+  color: var(--theme-white) !important;
+}
+.button:hover {
+  background: var(--theme-blue) !important;
+}
+.skills-ribbon,
+.approach-section,
+.playground-section {
+  background: var(--surface) !important;
+  color: var(--foreground) !important;
+}
+.course-card,
+.format-card,
+.quiz-card,
+.community-poster,
+.event,
+.lead-form,
+.help-strip,
+.benefit,
+.peach,
+.lavender,
+.sage {
+  background: var(--surface) !important;
+  color: var(--foreground) !important;
+}
+.course-card p,
+.format-card p,
+.section-heading > p,
+.consultation-section p,
+.footer-bottom,
+.muted,
+.course-number,
+.ribbon-item,
+.ribbon-item i {
+  color: var(--muted) !important;
+}
+.course-tags span,
+.pill,
+.filter,
+.language-select select,
+input,
+select,
+textarea {
+  background: var(--background) !important;
+  color: var(--foreground) !important;
+  border-color: var(--line) !important;
+}
+.theme-switch {
+  --container-light-bg: var(--theme-blue);
+  --container-night-bg: var(--theme-blue);
+  --sun-bg: var(--theme-white);
+  --moon-bg: var(--theme-white);
+  --spot-color: var(--theme-blue);
+  --stars-color: var(--theme-white);
+  --clouds-color: var(--theme-white);
+  --back-clouds-color: var(--theme-white);
+}
