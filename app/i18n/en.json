@@ -1,0 +1,8 @@
+{
+  "locale": "en",
+  "name": "English",
+  "languages": { "ru": "Russian", "ky": "Kyrgyz", "en": "English" },
+  "nav": { "home": "Home", "courses": "Courses", "tasks": "Tasks", "help": "Help", "about": "About us", "address": "Address", "contact": "Contact us" },
+  "actions": { "login": "Log in", "chooseCourse": "Choose a course", "menu": "Menu", "theme": "Dark theme" },
+  "brand": { "aria": "Okurmen IT — home", "tagline": "IT school" }
+}

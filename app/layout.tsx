@@ -25,6 +25,10 @@ export const metadata: Metadata = {
     locale: "ru_RU",
     type: "website",
   },
+  icons: {
+    icon: "/okurman-it.svg",
+    shortcut: "/okurman-it.svg",
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
