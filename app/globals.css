@@ -3036,7 +3036,7 @@ html[data-theme="dark"] {
   --muted: #aacadf;
   --line: #959db1;
   --surface: #2d303d;
-  --accent: #c4c9d1;
+  --accent: #4169e1;
   --soft: #2d303d;
   --green: #959db1;
   --theme-white: #f3fdff;
@@ -3064,6 +3064,18 @@ html[data-theme="dark"] .consultation-section .consultation-grid > div > p {
 }
 html[data-theme="dark"] .consultation-star {
   color: var(--muted) !important;
+}
+html[data-theme="dark"] .button:hover,
+html[data-theme="dark"] .filter.active:hover,
+html[data-theme="dark"] .enrollment-banner:hover {
+  background: #5b7ff0 !important;
+  border-color: #5b7ff0 !important;
+  color: #f3fdff !important;
+}
+html[data-theme="dark"] .text-button:hover,
+html[data-theme="dark"] .nav a:hover,
+html[data-theme="dark"] .footer-links a:hover {
+  color: #5b7ff0 !important;
 }
 html:not([data-theme="dark"]) .consultation-section {
   background: var(--background) !important;
