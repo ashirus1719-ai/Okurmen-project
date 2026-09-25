@@ -3031,16 +3031,16 @@ html[data-theme="dark"] .pill {
   --theme-blue: #4169e1;
 }
 html[data-theme="dark"] {
-  --background: #14204a;
-  --foreground: #dbe4ff;
-  --muted: #b6c5f4;
-  --line: #4169e1;
-  --surface: #1c2d63;
-  --accent: #4169e1;
-  --soft: #1c2d63;
-  --green: #4169e1;
-  --theme-white: #dbe4ff;
-  --theme-blue: #4169e1;
+  --background: #1d1f2c;
+  --foreground: #f3fdff;
+  --muted: #aacadf;
+  --line: #959db1;
+  --surface: #2d303d;
+  --accent: #c4c9d1;
+  --soft: #2d303d;
+  --green: #959db1;
+  --theme-white: #f3fdff;
+  --theme-blue: #1d1f2c;
 }
 html[data-theme="dark"] .theme-switch {
   --container-light-bg: #3f4047;
