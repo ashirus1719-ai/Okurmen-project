@@ -44,7 +44,7 @@ model User {
 }
 
 model Session {
-  id        String   @id
+  id        String   @id @default(uuid())
   expiresAt DateTime @map("expires_at") @db.Timestamptz(3)
   token     String   @unique
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
@@ -55,11 +55,11 @@ model Session {
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
-  @@map("sessions")
+  @@map("auth_sessions")
 }
 
 model Account {
-  id                    String    @id
+  id                    String    @id @default(uuid())
   accountId             String    @map("account_id")
   providerId            String    @map("provider_id")
   userId                String    @map("user_id") @db.Uuid
@@ -76,11 +76,11 @@ model Account {
 
   @@unique([providerId, accountId])
   @@index([userId])
-  @@map("accounts")
+  @@map("auth_accounts")
 }
 
 model Verification {
-  id         String   @id
+  id         String   @id @default(uuid())
   identifier String
   value      String
   expiresAt  DateTime @map("expires_at") @db.Timestamptz(3)
@@ -88,7 +88,7 @@ model Verification {
   updatedAt  DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
 
   @@index([identifier])
-  @@map("verifications")
+  @@map("auth_verifications")
 }
 
 // Multiple roles are allowed, with no automatic assignment of privileged roles.

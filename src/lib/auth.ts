@@ -8,6 +8,7 @@ const googleClientId = process.env.GOOGLE_CLIENT_ID;
 const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET;
 
 export const googleAuthEnabled = Boolean(googleClientId && googleClientSecret);
+export const emailDeliveryEnabled = Boolean(process.env.RESEND_API_KEY && process.env.AUTH_EMAIL_FROM);
 
 function createAuth() {
   const secret = process.env.BETTER_AUTH_SECRET;
@@ -28,8 +29,8 @@ function createAuth() {
     emailAndPassword: {
       enabled: true,
       minPasswordLength: 10,
-      requireEmailVerification: true,
-      autoSignIn: false,
+      requireEmailVerification: emailDeliveryEnabled,
+      autoSignIn: !emailDeliveryEnabled,
       revokeSessionsOnPasswordReset: true,
     },
     socialProviders: googleAuthEnabled
@@ -56,7 +57,7 @@ function createAuth() {
         expiresIn: 300,
         allowedAttempts: 5,
         storeOTP: "hashed",
-        sendVerificationOnSignUp: true,
+        sendVerificationOnSignUp: emailDeliveryEnabled,
         overrideDefaultEmailVerification: true,
         sendVerificationOTP: sendAuthOTP,
       }),

@@ -314,6 +314,7 @@ html[data-theme="dark"] .auth-error { color: #ff8585; }
 .auth-google:hover:not(:disabled) { border-color: #4169e1; }
 .auth-google:disabled { cursor: not-allowed; }
 .auth-google-mark { width: 20px; height: 20px; }
+.auth-google-note { margin-top: 8px; color: var(--muted); font-size: 12px; text-align: center; }
 .auth-back-login { display: block; margin: 14px auto 0; }
 html[data-theme="dark"] .auth-back { color: #ffffff; }
 @keyframes auth-rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
