@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createAuthClient } from "better-auth/react";
-import type { Locale } from "../i18n/catalogs";
+import type { Locale } from "@/lib/i18n/catalogs";
 
 const authClient = createAuthClient();
 

@@ -4,14 +4,18 @@ import Link from "next/link";
 import { headers, cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { getAuth } from "@/lib/auth";
-import { localeCookieName, resolveLocale } from "../i18n/catalogs";
-import AuthPreferences from "../ui/auth-preferences";
+import { catalogs, localeCookieName, resolveLocale } from "@/lib/i18n/catalogs";
+import AuthPreferences from "@/components/auth-preferences";
 import AccountActions from "./account-actions";
 
-export const metadata: Metadata = {
-  title: "Аккаунт — Окурмэн айти",
-  robots: { index: false, follow: false },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const cookieStore = await cookies();
+  const locale = resolveLocale(cookieStore.get(localeCookieName)?.value);
+  return {
+    title: catalogs[locale]["__meta.accountTitle"],
+    robots: { index: false, follow: false },
+  };
+}
 
 export default async function AccountPage() {
   const session = await getAuth().api.getSession({ headers: await headers() });
@@ -19,11 +23,12 @@ export default async function AccountPage() {
 
   const cookieStore = await cookies();
   const locale = resolveLocale(cookieStore.get(localeCookieName)?.value);
+  const messages = catalogs[locale];
 
   return (
     <main className="account-layout">
       <header className="account-header">
-        <Link href="/" className="auth-brand" aria-label="Окурмэн айти — главная">
+        <Link href="/" className="auth-brand" aria-label={messages["Окурмэн айти — главная"]}>
           <Image src="/logo.png" alt="" width={40} height={40} priority />
         </Link>
         <div className="account-header-actions">

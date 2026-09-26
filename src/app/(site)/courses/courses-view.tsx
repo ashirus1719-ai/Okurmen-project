@@ -3,29 +3,19 @@
 import { useState } from "react";
 import Link from "next/link";
 import { courses } from "@/lib/courses";
-import AuthPreferences from "../ui/auth-preferences";
-import { type Locale, type MessageCatalog } from "../i18n/catalogs";
+import { type MessageCatalog } from "@/lib/i18n/catalogs";
 
 type Direction = "frontend" | "backend";
 
-export default function CoursesView({ initialLocale, messages }: { initialLocale: Locale; messages: MessageCatalog }) {
+export default function CoursesView({ messages }: { messages: MessageCatalog }) {
   const [direction, setDirection] = useState<Direction>("frontend");
   const t = (key: string) => messages[key] ?? key;
   const selected = courses.find((course) => course.id === direction)!;
   const starter = courses.find((course) => course.id === "start")!;
 
   return (
-    <main className="courses-experience">
-      <div className="courses-ambient" aria-hidden="true"><span /><span /><span /><span /><span /><span /></div>
+    <main className="courses-experience" id="main">
       <div className="courses-shell">
-        <header className="courses-header">
-          <Link className="courses-brand" href="/" aria-label={t("courses.homeAria")}>okurmen<span> / IT</span></Link>
-          <div className="courses-header-actions">
-            <Link className="courses-home" href="/">{t("courses.home")} <span aria-hidden="true">↗</span></Link>
-            <AuthPreferences initialLocale={initialLocale} />
-          </div>
-        </header>
-
         <section className="courses-hero" aria-labelledby="courses-title">
           <p className="courses-kicker"><span className="courses-spark" aria-hidden="true">✦</span>{t("courses.kicker")}</p>
           <h1 id="courses-title">{t("courses.heading")} <span>{t("courses.headingAccent")}</span></h1>
@@ -62,7 +52,6 @@ export default function CoursesView({ initialLocale, messages }: { initialLocale
             <aside className="courses-syllabus">
               <div className="courses-syllabus-heading"><span className="courses-index">02 / 02</span><h3>{t("courses.whatYouLearn")}</h3></div>
               <ol>{selected.modules.map((module, index) => <li key={module}><span>0{index + 1}</span>{t(module)}</li>)}</ol>
-              <Link href={`/?course=${selected.id}#consultation`} className="courses-consult">{t("Обсудить обучение")} <span aria-hidden="true">↗</span></Link>
             </aside>
           </div>
         </section>

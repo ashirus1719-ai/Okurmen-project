@@ -1,5 +1,5 @@
 import { PrismaPg } from "@prisma/adapter-pg";
-import { PrismaClient } from "../../generated/prisma/client";
+import { PrismaClient } from "../../../generated/prisma/client";
 
 // Shared by the server-only entry point and the local connection check.
 export function createPrismaClient() {

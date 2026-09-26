@@ -1,24 +1,14 @@
-import Landing from "./ui/landing";
+import Landing from "@/components/landing";
 import { cookies } from "next/headers";
-import { localeCookieName, resolveLocale } from "./i18n/catalogs";
+import { localeCookieName, resolveLocale } from "@/lib/i18n/catalogs";
 
-export default async function Home({
-  searchParams,
-}: {
-  searchParams: Promise<{ lang?: string; direction?: string; course?: string }>;
-}) {
-  const query = await searchParams;
+export default async function Home() {
   const cookieStore = await cookies();
-  const language = resolveLocale(cookieStore.get(localeCookieName)?.value, query.lang);
+  const language = resolveLocale(cookieStore.get(localeCookieName)?.value);
   return (
     <Landing
-      initialCourse={query.course}
       initialLanguage={language}
-      initialFilter={
-        query.direction === "code" || query.direction === "start"
-          ? query.direction
-          : "all"
-      }
+      showChrome={false}
     />
   );
 }

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { useRouter } from "next/navigation";
-import { isLocale, localeCookieName, type Locale } from "../i18n/catalogs";
+import { isLocale, localeCookieName, type Locale } from "@/lib/i18n/catalogs";
 
 const localeLabels = [
   ["ru", "RU"],

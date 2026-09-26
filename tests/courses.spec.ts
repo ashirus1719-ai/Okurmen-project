@@ -3,6 +3,7 @@ import { expect, test } from "@playwright/test";
 test("courses work across themes, languages, directions and screen sizes", async ({ page }) => {
   const errors: string[] = [];
   page.on("pageerror", error => errors.push(error.message));
+  await page.emulateMedia({ reducedMotion: "reduce" });
 
   for (const width of [375, 1440]) {
     await page.setViewportSize({ width, height: 900 });
@@ -14,7 +15,10 @@ test("courses work across themes, languages, directions and screen sizes", async
         await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
         await expect(page.locator(".courses-direction")).toHaveCount(2);
         await page.locator(".courses-direction").nth(1).click();
-        await expect(page.locator(".courses-direction").nth(1)).toHaveAttribute("aria-pressed", "true");
+        await expect(
+          page.locator(".courses-direction").nth(1),
+          `direction click failed at ${width}px, ${locale}, ${theme}; runtime errors: ${errors.join(" | ")}`,
+        ).toHaveAttribute("aria-pressed", "true");
         await expect(page.locator(".courses-feature-main h3")).toHaveText("Backend");
         expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), `${locale} ${theme} ${width}px overflow`).toBe(true);
       }

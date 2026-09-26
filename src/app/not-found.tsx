@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { cookies } from "next/headers";
-import { catalogs, localeCookieName, resolveLocale } from "./i18n/catalogs";
-import { localizeView } from "./i18n/localize-view";
+import { catalogs, localeCookieName, resolveLocale } from "@/lib/i18n/catalogs";
+import { localizeView } from "@/lib/i18n/localize-view";
 
 export default async function NotFound() {
   const cookieStore = await cookies();

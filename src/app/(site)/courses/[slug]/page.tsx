@@ -3,8 +3,8 @@ import Link from "next/link";
 import { cookies } from "next/headers";
 import { courses } from "@/lib/courses";
 import type { Metadata } from "next";
-import { catalogs, localeCookieName, resolveLocale } from "../../i18n/catalogs";
-import { localizeView } from "../../i18n/localize-view";
+import { catalogs, localeCookieName, resolveLocale } from "@/lib/i18n/catalogs";
+import { localizeView } from "@/lib/i18n/localize-view";
 
 export function generateStaticParams() {
   return courses.map(course => ({ slug: course.id }));
@@ -31,7 +31,7 @@ export default async function CoursePage({ params }: { params: Promise<{ slug: s
   const cookieStore = await cookies();
   const locale = resolveLocale(cookieStore.get(localeCookieName)?.value);
   const content = (
-    <main className="section-wrap section-space course-page">
+    <main className="section-wrap section-space course-page" id="main">
       <Link href="/courses" className="text-button">← Все направления</Link>
       <div className="course-page-grid">
         <div>
@@ -42,7 +42,6 @@ export default async function CoursePage({ params }: { params: Promise<{ slug: s
           <div className="course-tags">
             {course.tags.map(tag => <span key={tag}>{tag}</span>)}
           </div>
-          <Link href={`/?course=${course.id}#consultation`} className="button">Обсудить обучение <span>↗</span></Link>
         </div>
         <div className={`course-card ${course.color}`}>
           <div className="course-symbol" aria-hidden="true">{course.symbol}</div>
@@ -52,12 +51,6 @@ export default async function CoursePage({ params }: { params: Promise<{ slug: s
           </ol>
         </div>
       </div>
-      <section className="enrollment-banner">
-        <div>
-          <h3>Сначала — понятные условия</h3>
-          <p>Программа предварительная: содержание и итоговый проект уточняются для выбранной группы. На консультации согласуем уровень, формат, даты, расписание и полную стоимость. Оставленная заявка не резервирует место и не обязывает к оплате.</p>
-        </div>
-      </section>
     </main>
   );
   return localizeView(content, catalogs[locale]);

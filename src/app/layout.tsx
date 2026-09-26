@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import { cookies } from "next/headers";
 import "./globals.css";
-import { catalogs, localeCookieName, resolveLocale } from "./i18n/catalogs";
+import { catalogs, localeCookieName, resolveLocale } from "@/lib/i18n/catalogs";
 
 const inter = Inter({
   variable: "--font-inter",

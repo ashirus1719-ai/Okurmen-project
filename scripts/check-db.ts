@@ -1,5 +1,5 @@
 import { loadEnvConfig } from "@next/env";
-import { createPrismaClient } from "../lib/db/client";
+import { createPrismaClient } from "../src/lib/db/client";
 
 loadEnvConfig(process.cwd(), process.env.NODE_ENV !== "production");
 

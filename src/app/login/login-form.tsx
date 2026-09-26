@@ -4,7 +4,7 @@ import { useEffect, useState, type CSSProperties, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { emailOTPClient } from "better-auth/client/plugins";
 import { createAuthClient } from "better-auth/react";
-import type { Locale } from "../i18n/catalogs";
+import type { Locale } from "@/lib/i18n/catalogs";
 
 const authClient = createAuthClient({ plugins: [emailOTPClient()] });
 type Mode = "login" | "signup" | "verify" | "forgot" | "reset";
@@ -284,7 +284,7 @@ export default function LoginForm({ locale, googleEnabled }: { locale: Locale; g
 
       {(mode === "verify" || mode === "reset") && (
         <button className="auth-resend" type="button" onClick={resendCode} disabled={pending || resendWait > 0}>
-          {resendWait > 0 ? `${text.resendCountdown} ${resendWait}с` : text.resend}
+          {resendWait > 0 ? `${text.resendCountdown} ${resendWait}${locale === "en" ? "s" : "с"}` : text.resend}
         </button>
       )}
 
