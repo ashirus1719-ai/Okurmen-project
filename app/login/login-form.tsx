@@ -62,7 +62,7 @@ const copy: Record<Locale, AuthCopy> = {
   }
 };
 
-export default function LoginForm({ locale, googleEnabled }: { locale: Locale; googleEnabled: boolean }) {
+export default function LoginForm({ locale, googleEnabled, emailEnabled }: { locale: Locale; googleEnabled: boolean; emailEnabled: boolean }) {
   const router = useRouter();
   const text = copy[locale];
   const [mode, setMode] = useState<Mode>("login");
@@ -108,7 +108,7 @@ export default function LoginForm({ locale, googleEnabled }: { locale: Locale; g
       if (mode === "login") {
         const { error: signInError } = await authClient.signIn.email({ email, password, rememberMe });
         if (signInError) {
-          if (signInError.status === 403 || signInError.code === "EMAIL_NOT_VERIFIED") {
+          if (emailEnabled && (signInError.status === 403 || signInError.code === "EMAIL_NOT_VERIFIED")) {
             await authClient.emailOtp.sendVerificationOtp({ email, type: "email-verification" });
             setOtp("");
             changeMode("verify");
@@ -124,14 +124,19 @@ export default function LoginForm({ locale, googleEnabled }: { locale: Locale; g
       }
 
       if (mode === "signup") {
-        const { error: signUpError } = await authClient.signUp.email({ name, email, password });
+        const { error: signUpError } = await authClient.signUp.email({ name: name.trim(), email: email.trim(), password });
         if (signUpError) {
           setError(text.genericError);
           return;
         }
-        setOtp("");
-        changeMode("verify");
-        setNotice(text.verificationSent);
+        if (emailEnabled) {
+          setOtp("");
+          changeMode("verify");
+          setNotice(text.verificationSent);
+        } else {
+          router.replace("/account");
+          router.refresh();
+        }
         return;
       }
 
@@ -226,7 +231,7 @@ export default function LoginForm({ locale, googleEnabled }: { locale: Locale; g
         <h2 id="auth-title">{text.titles[mode]}</h2>
       </header>
 
-      <form className="auth-form" onSubmit={handleSubmit} noValidate>
+      <form className="auth-form" onSubmit={handleSubmit}>
         {showName && (
           <label className="auth-field" style={fieldStyle(0)}>
             <span>{text.name}</span>
@@ -270,7 +275,7 @@ export default function LoginForm({ locale, googleEnabled }: { locale: Locale; g
         {mode === "login" && (
           <div className="auth-options">
             <label className="auth-remember"><input type="checkbox" checked={rememberMe} onChange={(event) => setRememberMe(event.target.checked)} /><span>{text.remember}</span></label>
-            <button type="button" className="auth-text-button" onClick={() => changeMode("forgot")}>{text.forgot}</button>
+            {emailEnabled && <button type="button" className="auth-text-button" onClick={() => changeMode("forgot")}>{text.forgot}</button>}
           </div>
         )}
 
@@ -305,6 +310,7 @@ export default function LoginForm({ locale, googleEnabled }: { locale: Locale; g
               <path fill="#F14336" d="m419.404 58.936-82.933 67.896c-23.335-14.586-50.919-23.012-80.471-23.012-66.729 0-123.429 42.957-143.965 102.724l-83.411-68.29C71.23 56.123 157.06 0 256 0c62.115 0 119.068 22.126 163.404 58.936Z" />
             </svg>{text.google}
           </button>
+          {!googleEnabled && <p className="auth-google-note">{text.googleUnavailable}</p>}
         </>
       ) : (
         <button className="auth-text-button auth-back-login" type="button" onClick={() => changeMode("login")}>{text.backToLogin}</button>

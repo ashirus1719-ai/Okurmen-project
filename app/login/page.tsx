@@ -15,6 +15,7 @@ export default async function LoginPage() {
   const cookieStore = await cookies();
   const locale = resolveLocale(cookieStore.get(localeCookieName)?.value);
   const googleEnabled = Boolean(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET);
+  const emailEnabled = Boolean(process.env.RESEND_API_KEY && process.env.AUTH_EMAIL_FROM);
 
   return (
     <main className="auth-layout">
@@ -28,7 +29,7 @@ export default async function LoginPage() {
         </div>
       </div>
       <div className="auth-main">
-        <LoginForm locale={locale} googleEnabled={googleEnabled} />
+        <LoginForm locale={locale} googleEnabled={googleEnabled} emailEnabled={emailEnabled} />
       </div>
     </main>
   );

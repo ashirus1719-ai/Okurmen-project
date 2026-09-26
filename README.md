@@ -16,11 +16,11 @@ Next.js 16 + Prisma ORM 7 + Neon PostgreSQL. Для разработки исп�
 
 ## Авторизация
 
-Better Auth обслуживает регистрацию и вход по email/паролю, подтверждение email шестизначным кодом, повторную отправку кода, сброс пароля по коду, Google OAuth и 30-дневные сессии. Коды действуют 5 минут, хранятся в БД в хешированном виде и имеют ограничение числа попыток. Письма отправляются через Resend.
+Better Auth обслуживает регистрацию и вход по email/паролю, Google OAuth и 30-дневные сессии. Когда настроен Resend, включаются подтверждение email шестизначным кодом, повторная отправка кода и сброс пароля по коду. Коды действуют 5 минут, хранятся в БД в хешированном виде и имеют ограничение числа попыток. Без Resend регистрация сразу открывает сессию, а восстановление пароля скрыто.
 
-Заполните auth-переменные из `.env.example` в `.env.local`. `BETTER_AUTH_SECRET` должен быть случайным значением длиной не менее 32 символов; задайте `BETTER_AUTH_URL` как канонический origin сайта. Для Google OAuth добавьте redirect URI `https://<ваш-домен>/api/auth/callback/google` в настройках OAuth client. Для Resend подтвердите домен отправителя и укажите его в `AUTH_EMAIL_FROM`. Без OAuth-ключей Google-кнопка будет неактивна, без настроек Resend отправка кодов завершится ошибкой.
+Заполните auth-переменные из `.env.example` в `.env.local`. `BETTER_AUTH_SECRET` должен быть случайным значением длиной не менее 32 символов; задайте `BETTER_AUTH_URL` как канонический origin сайта. Для Google OAuth создайте Web application в Google Cloud и добавьте redirect URI `http://localhost:3000/api/auth/callback/google` для локальной разработки и `https://<ваш-домен>/api/auth/callback/google` для продакшена. Заполните `GOOGLE_CLIENT_ID` и `GOOGLE_CLIENT_SECRET`; без них Google-кнопка будет неактивна. Для Resend подтвердите домен отправителя и укажите `RESEND_API_KEY` и `AUTH_EMAIL_FROM`.
 
-Перед запуском авторизации примените миграции командой `npm run db:deploy`. Миграция сохраняет старые UUID-аккаунты и допускает `NULL` email только для существующих записей без email; новые регистрации Better Auth создаёт с обязательным адресом и не открывает сессию до его подтверждения.
+Перед запуском авторизации примените миграции командой `npm run db:deploy`. Миграция сохраняет прежние `sessions`, `oauth_accounts` и `password_credentials`; Better Auth использует отдельные `auth_sessions`, `auth_accounts` и `auth_verifications`. Новые регистрации создаются с обязательным email. При настроенном Resend сессия открывается после подтверждения почты.
 
 ## Команды Prisma
 
@@ -31,7 +31,7 @@ Better Auth обслуживает регистрацию и вход по email
 - `npm run db:deploy` — применить существующие миграции (в том числе при развёртывании).
 - `npm run db:studio` — открыть редактор данных Prisma Studio.
 
-Модель `users` связана с `user_roles`, `sessions` и `accounts`; существующие роли остаются отдельными и не назначаются автоматически при регистрации.
+Модель `users` связана с `user_roles`, `auth_sessions` и `auth_accounts`; существующие роли остаются отдельными и не назначаются автоматически при регистрации.
 
 В Server Components, Server Actions и Route Handlers с Node.js runtime:
 
