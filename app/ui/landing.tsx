@@ -363,9 +363,9 @@ export default function Landing({
               </div>
             </div>
           </label>
-          <a className="header-login" href="#consultation">
+          <Link className="header-login" href="/login">
             Войти
-          </a>
+          </Link>
           </div>
         </div>
         <nav ref={navRef} aria-label="Основная навигация" className="nav">
