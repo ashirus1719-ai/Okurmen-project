@@ -630,6 +630,7 @@ export default function Landing({
             ))}
             <span className="filter-hint">Сначала интерес. Потом — код.</span>
           </div>
+          <Link href="/courses" className="courses-page-link">Открыть страницу курсов ↗</Link>
           <div className="course-grid">
             {courses
               .filter((c) => filter === "all" || c.type === filter)

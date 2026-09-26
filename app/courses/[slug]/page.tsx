@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const messages = catalogs[locale];
   return {
     title: course
-      ? `${course.title} — ${locale === "en" ? "Okurmen IT" : "Окурмэн айти"}`
+      ? `${messages[course.title] ?? course.title} — ${locale === "en" ? "Okurmen IT" : "Окурмэн айти"}`
       : messages["__meta.courseNotFound"],
     description: course ? messages[course.description] ?? course.description : undefined,
   };
@@ -32,7 +32,7 @@ export default async function CoursePage({ params }: { params: Promise<{ slug: s
   const locale = resolveLocale(cookieStore.get(localeCookieName)?.value);
   const content = (
     <main className="section-wrap section-space course-page">
-      <Link href="/#courses" className="text-button">← Все направления</Link>
+      <Link href="/courses" className="text-button">← Все направления</Link>
       <div className="course-page-grid">
         <div>
           <div className="eyebrow">ОКУРМЭН АЙТИ / ПРОГРАММА ОБУЧЕНИЯ</div>

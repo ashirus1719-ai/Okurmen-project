@@ -214,5 +214,20 @@
   "404 / НЕМНОГО СБИЛИСЬ С ПУТИ": "404 / A SMALL DETOUR",
   "Здесь пока пусто.": "There's nothing here yet.",
   "Но первый шаг в IT по-прежнему ждёт на главной.": "Your first step into IT is still waiting on the home page.",
-  "На главную": "Go home"
+  "На главную": "Go home",
+  "courses.homeAria": "Okurmen IT — home",
+  "courses.home": "Home",
+  "courses.kicker": "COURSES / YOUR STARTING POINT",
+  "courses.heading": "Choose your",
+  "courses.headingAccent": "path in tech.",
+  "courses.intro": "Build what people see or create the systems behind it. Start with the direction that interests you.",
+  "courses.chooseDirection": "Choose a direction",
+  "courses.directionHint": "Select a direction to explore its curriculum and technologies.",
+  "courses.directionAria": "Choose a learning direction",
+  "courses.selectedDirection": "SELECTED DIRECTION",
+  "courses.exploreCourse": "Explore the course",
+  "courses.whatYouLearn": "What you'll learn",
+  "courses.notSure": "STILL DECIDING?",
+  "courses.exploreStarter": "Explore IT Start",
+  "Открыть страницу курсов ↗": "Explore all courses ↗"
 }
